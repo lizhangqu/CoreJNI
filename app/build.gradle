@@ -9,7 +9,25 @@ android {
         targetSdkVersion global_targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+
+        externalNativeBuild {
+            cmake {
+
+            }
+        }
     }
+
+    externalNativeBuild {
+        cmake {
+            path project.file("src/main/jni/CMakeLists.txt")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -23,5 +41,4 @@ dependencies {
     compile "com.android.support:appcompat-v7:${global_androidSupportVersion}"
     compile "com.android.support.constraint:constraint-layout:${global_androidConstraintLayoutVersion}"
     testCompile "junit:junit:${global_junitVersion}"
-    compile project(':library')
 }
