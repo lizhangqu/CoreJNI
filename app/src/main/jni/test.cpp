@@ -1,5 +1,6 @@
 #include "jni.h"
 #include "logs.h"
+#include <iostream>
 
 #ifndef NELEM
 # define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
@@ -15,6 +16,7 @@ void native_test(JNIEnv *env, jobject thiz) {
     LOGI("info");
     LOGW("warning");
     LOGE("error");
+    LOGE("%s hello", std::string("asas").c_str());
 }
 
 static const JNINativeMethod sMethods[] = {
