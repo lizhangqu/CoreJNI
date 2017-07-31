@@ -10,7 +10,23 @@ android {
 
         consumerProguardFiles project.file("proguard-rules.pro")
 
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+
+        externalNativeBuild {
+            cmake {
+
+            }
+        }
     }
+
+    externalNativeBuild {
+        cmake {
+            path project.file("src/main/cpp/CMakeLists.txt")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
