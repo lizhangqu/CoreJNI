@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(CoreJNI)
 
 add_definitions(-DCORE_LOG_TAG="test")
+#add_definitions(-DNDEBUG=1)
 set(CoreJNI_Root ${CMAKE_SOURCE_DIR}/../CoreJNI)
 include_directories(
     ${CoreJNI_Root}/include

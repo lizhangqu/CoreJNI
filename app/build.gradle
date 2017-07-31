@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'lizhangqu'
+            keyPassword 'lizhangqu'
+            storePassword 'lizhangqu'
+            storeFile project.file('release.jks')
+        }
+    }
     compileSdkVersion global_compileSdkVersion
     buildToolsVersion global_buildToolsVersion
     defaultConfig {
@@ -9,26 +17,25 @@ android {
         targetSdkVersion global_targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-
         ndk {
             abiFilters 'armeabi-v7a'
         }
-
         externalNativeBuild {
             cmake {
 
             }
         }
+        signingConfig signingConfigs.config
     }
-
     externalNativeBuild {
         cmake {
             path project.file("src/main/jni/CMakeLists.txt")
         }
     }
-
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -37,8 +44,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:${global_androidSupportVersion}"
-    compile "com.android.support.constraint:constraint-layout:${global_androidConstraintLayoutVersion}"
-    testCompile "junit:junit:${global_junitVersion}"
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile("com.android.support:appcompat-v7:${global_androidSupportVersion}")
+    compile("com.android.support.constraint:constraint-layout:${global_androidConstraintLayoutVersion}")
+    testCompile("junit:junit:${global_junitVersion}")
 }
