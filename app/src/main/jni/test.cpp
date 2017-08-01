@@ -143,7 +143,14 @@ jobject native_list(JNIEnv *env, jobject thiz) {
     vec.push_back("1234");
     vec.push_back("ada");
     vec.push_back("肯定不是");
-    return javaListForString(env, vec);
+    jobject pJobject = vectorToListForString(env, vec);
+    if (pJobject != NULL) {
+        std::vector<std::string> vector = listToVectorForString(env, pJobject);
+        for (int i = 0; i < vector.size(); ++i) {
+            LOGE("get from vector %s", vector[i].c_str());
+        }
+    }
+    return pJobject;
 }
 
 static const JNINativeMethod sMethods[] = {
