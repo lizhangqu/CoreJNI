@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.6)
 project(CoreJNI)
 
 add_definitions(-DCORE_LOG_TAG="test")
-set(CoreJNI_Root ${CMAKE_SOURCE_DIR}/../../../../CoreJNI)
+set(CoreJNI_Root ${CMAKE_SOURCE_DIR}/../../../../src)
 include_directories(
-    ${CoreJNI_Root}/include
+    ${CoreJNI_Root}/util/include
     ${CoreJNI_Root}/nativehelper/include
 )
 
