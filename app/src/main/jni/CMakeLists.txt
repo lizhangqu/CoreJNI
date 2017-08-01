@@ -5,6 +5,7 @@ add_definitions(-DCORE_LOG_TAG="test")
 set(CoreJNI_Root ${CMAKE_SOURCE_DIR}/../../../../CoreJNI)
 include_directories(
     ${CoreJNI_Root}/include
+    ${CoreJNI_Root}/nativehelper/include
 )
 
 set(

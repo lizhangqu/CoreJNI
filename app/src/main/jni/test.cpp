@@ -3,6 +3,19 @@
 #include "strings.h"
 #include "exceptions.h"
 #include <iostream>
+#include <typeinfo>
+#include <stdexcept>
+#include <exception>
+#include <stdio.h>
+#include <signal.h>
+#include <stdlib.h>
+
+#include "ScopedLocalRef.h"
+#include "ScopedUtfChars.h"
+#include "ScopedStringChars.h"
+#include "ScopedBytes.h"
+#include "ScopedPrimitiveArray.h"
+#include "UniquePtr.h"
 
 #ifndef NELEM
 # define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
@@ -12,6 +25,20 @@
 #define CLASSNAME "io/github/lizhangqu/sample/Test"
 #endif
 
+/**
+ * 段错误
+ */
+void doSigSEGVTest() {
+    int *p = NULL;
+    *p = 15;
+}
+
+double division(int a, int b) {
+    if (b == 0) {
+        throw "Division by zero condition!";
+    }
+    return (a / b);
+}
 
 void native_test(JNIEnv *env, jobject thiz) {
     LOGV("verbose");
@@ -26,12 +53,79 @@ void native_test(JNIEnv *env, jobject thiz) {
     env->CallStaticVoidMethod(clazz, pID);
     checkException(env);
 
+
+    ScopedLocalRef<jclass> IllegalArgumentException(env, env->FindClass(
+            "java/lang/IllegalArgumentException"));
+    if (IllegalArgumentException.get() == NULL) {
+        LOGE("can't get it");
+    } else {
+        LOGE("get it");
+    }
+
+    jstring test = env->NewStringUTF("test jstring");
+    ScopedUtfChars scopedUtfChars(env, test);
+    if (scopedUtfChars.c_str() == NULL) {
+        LOGE("can't get it");
+    } else {
+        LOGE("get it %s", scopedUtfChars.c_str());
+    }
+
+    jstring jc = env->NewStringUTF("asasasasas");
+    ScopedStringChars scopedStringChars(env, jc);
+    if (scopedStringChars.get() == NULL) {
+        LOGE("can't get it");
+    } else {
+        LOGE("get it %d", scopedStringChars.size());
+    }
+
+    UniquePtr<std::string> uniquePtr(new std::string("hello"));
+
+    if (uniquePtr.get() == NULL) {
+        LOGE("can't get it");
+    } else {
+        LOGE("get it %s", (*(uniquePtr.get())).c_str());
+    }
+
+    ScopedStringChars scopedStringChars1(env, NULL);
+    if (env->ExceptionOccurred()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+    }
+
     throwException(env, "java/lang/IllegalArgumentException", "非法参数异常");
+
 
 }
 
 jstring native_string(JNIEnv *env, jobject thiz) {
     return javaString(env, "just a test");
+}
+
+void native_byte(JNIEnv *env, jobject thiz, jbyteArray array) {
+    ScopedBytesRO scopedBytes(env, array);
+    if (scopedBytes.get() == NULL) {
+        LOGE("can't get it");
+    } else {
+        const jbyte *jbyte1 = scopedBytes.get();
+        const unsigned char *tmp = reinterpret_cast<const unsigned char *>(jbyte1);
+        LOGE("get it %s", tmp);
+    }
+
+    ScopedByteArrayRO sourceBytes(env, array);
+//    ScopedBooleanArrayRO RW
+//    ScopedIntArrayRO RW
+//    ScopedCharArrayRO RW
+//    ScopedDoubleArrayRO RW
+//    ScopedFloatArrayRO RW
+//    ScopedLongArrayRO RW
+//    ScopedShortArrayRO RW
+    if (sourceBytes.get() == NULL) {
+        LOGE("can't get it");
+    } else {
+        const jbyte *string = sourceBytes.get();
+        LOGE("get it %d",sourceBytes.size());
+    }
+
 }
 
 static const JNINativeMethod sMethods[] = {
@@ -44,6 +138,11 @@ static const JNINativeMethod sMethods[] = {
                 const_cast<char *>("native_string"),
                 const_cast<char *>("()Ljava/lang/String;"),
                 reinterpret_cast<void *>(native_string)
+        },
+        {
+                const_cast<char *>("native_byte"),
+                const_cast<char *>("([B)V"),
+                reinterpret_cast<void *>(native_byte)
         }
 };
 

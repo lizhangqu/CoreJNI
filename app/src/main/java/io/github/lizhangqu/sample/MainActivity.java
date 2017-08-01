@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
                 String s = Test.native_string();
                 Log.e("TAG", "native_string:" + s);
 
+                Test.native_byte("bytes".getBytes());
             }
         });
 

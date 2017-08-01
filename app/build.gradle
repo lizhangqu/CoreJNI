@@ -22,7 +22,8 @@ android {
         }
         externalNativeBuild {
             cmake {
-
+                arguments "-DANDROID_STL=c++_static"
+                cppFlags "-std=c++11"
             }
         }
         signingConfig signingConfigs.config

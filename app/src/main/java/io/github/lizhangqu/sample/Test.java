@@ -1,7 +1,5 @@
 package io.github.lizhangqu.sample;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * 功能介绍
  *
@@ -19,7 +17,9 @@ public class Test {
 
     public static native String native_string();
 
-    public static void callByNative() throws UnsupportedEncodingException {
+    public static native void native_byte(byte[] bytes);
+
+    public static void callByNative() {
         int a = 20 / 0;
     }
 }
