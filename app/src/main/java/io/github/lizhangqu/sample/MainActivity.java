@@ -1,12 +1,14 @@
 package io.github.lizhangqu.sample;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
                 Test.native_byte("bytes".getBytes(), byteBuffer);
                 List<String> strings = Test.native_list();
                 Log.e("TAG", "strings:" + strings);
+                Map<String, String> map = new HashMap<>();
+                map.put("key1", "value1");
+                map.put("key2", "value2");
+                map.put("key3", "value3");
+                map.put("key4", "value4");
+                Test.native_map(map);
             }
         });
 

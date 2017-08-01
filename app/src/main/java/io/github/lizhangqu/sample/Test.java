@@ -1,6 +1,7 @@
 package io.github.lizhangqu.sample;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能介绍
@@ -22,6 +23,8 @@ public class Test {
     public static native void native_byte(byte[] bytes, java.nio.ByteBuffer byteBuffer);
 
     public static native List<String> native_list();
+
+    public static native void native_map(Map<String, String> map);
 
     public static void callByNative() {
         int a = 20 / 0;

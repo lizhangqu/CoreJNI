@@ -2,6 +2,7 @@
 #include "logs.h"
 #include "strings.h"
 #include "lists.h"
+#include "maps.h"
 #include "exceptions.h"
 #include <iostream>
 #include <typeinfo>
@@ -153,6 +154,20 @@ jobject native_list(JNIEnv *env, jobject thiz) {
     return pJobject;
 }
 
+
+void native_map(JNIEnv *env, jobject thiz, jobject javaMap) {
+    std::map<std::string, std::string> myMap = javaMapToSTLMap(env, javaMap);
+    for (auto iter = myMap.begin(); iter != myMap.end(); ++iter) {
+        auto myPair = *iter;
+        std::string key = myPair.first;
+        std::string value = myPair.second;
+
+        LOGE("get from map key %s", key.c_str());
+        LOGE("get from map value %s", value.c_str());
+    }
+
+}
+
 static const JNINativeMethod sMethods[] = {
         {
                 const_cast<char *>("native_test"),
@@ -173,6 +188,11 @@ static const JNINativeMethod sMethods[] = {
                 const_cast<char *>("native_list"),
                 const_cast<char *>("()Ljava/util/List;"),
                 reinterpret_cast<void *>(native_list)
+        },
+        {
+                const_cast<char *>("native_map"),
+                const_cast<char *>("(Ljava/util/Map;)V"),
+                reinterpret_cast<void *>(native_map)
         }
 };
 
