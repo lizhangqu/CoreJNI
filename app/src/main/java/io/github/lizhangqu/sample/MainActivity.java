@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
                 ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4);
                 byteBuffer.put("haha".getBytes());
                 Test.native_byte("bytes".getBytes(), byteBuffer);
+                List<String> strings = Test.native_list();
+                Log.e("TAG", "strings:" + strings);
             }
         });
 

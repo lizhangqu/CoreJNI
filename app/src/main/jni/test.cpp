@@ -1,6 +1,7 @@
 #include "jni.h"
 #include "logs.h"
 #include "strings.h"
+#include "lists.h"
 #include "exceptions.h"
 #include <iostream>
 #include <typeinfo>
@@ -9,6 +10,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <vector>
 
 #include "ScopedLocalRef.h"
 #include "ScopedUtfChars.h"
@@ -128,13 +130,20 @@ void native_byte(JNIEnv *env, jobject thiz, jbyteArray array, jobject bytebuffer
 //    ScopedFloatArrayRO RW
 //    ScopedLongArrayRO RW
 //    ScopedShortArrayRO RW
-    sourceBytes.get()
     if (sourceBytes.get() == NULL) {
         LOGE("can't get it");
     } else {
         LOGE("get it %d", sourceBytes.size());
     }
 
+}
+
+jobject native_list(JNIEnv *env, jobject thiz) {
+    std::vector<std::string> vec;
+    vec.push_back("1234");
+    vec.push_back("ada");
+    vec.push_back("肯定不是");
+    return javaListForString(env, vec);
 }
 
 static const JNINativeMethod sMethods[] = {
@@ -152,6 +161,11 @@ static const JNINativeMethod sMethods[] = {
                 const_cast<char *>("native_byte"),
                 const_cast<char *>("([BLjava/nio/ByteBuffer;)V"),
                 reinterpret_cast<void *>(native_byte)
+        },
+        {
+                const_cast<char *>("native_list"),
+                const_cast<char *>("()Ljava/util/List;"),
+                reinterpret_cast<void *>(native_list)
         }
 };
 
