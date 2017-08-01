@@ -24,7 +24,7 @@ public class Test {
 
     public static native List<String> native_list();
 
-    public static native void native_map(Map<String, String> map);
+    public static native Map<String, String> native_map(Map<String, String> map);
 
     public static void callByNative() {
         int a = 20 / 0;

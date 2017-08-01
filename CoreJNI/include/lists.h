@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-jobject vectorToListForString(JNIEnv *env, std::vector<std::string> param) {
+jobject stlVectorToJavaList(JNIEnv *env, std::vector<std::string> param) {
     if (env == NULL) {
         return NULL;
     }
@@ -27,7 +27,7 @@ jobject vectorToListForString(JNIEnv *env, std::vector<std::string> param) {
     return list;
 }
 
-std::vector<std::string> listToVectorForString(JNIEnv *env, jobject list) {
+std::vector<std::string> javaListToStlVector(JNIEnv *env, jobject list) {
     std::vector<std::string> result;
     if (env == NULL) {
         return result;

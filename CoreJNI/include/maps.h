@@ -5,7 +5,32 @@
 #include <string>
 #include <map>
 
-std::map<std::string, std::string> javaMapToSTLMap(JNIEnv *env, jobject javaMap) {
+jobject stlMapToJavaMap(JNIEnv *env, std::map<std::string, std::string> stlMap) {
+    if (env == NULL) {
+        return NULL;
+    }
+    jclass java_util_HashMap = env->FindClass("java/util/HashMap");
+    if (java_util_HashMap == NULL) {
+        return NULL;
+    }
+    jmethodID java_util_HashMap_init = env->GetMethodID(java_util_HashMap, "<init>", "()V");
+    jmethodID java_util_HashMap_put = env->GetMethodID(java_util_HashMap, "put",
+                                                       "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+    jobject jMap = env->NewObject(java_util_HashMap, java_util_HashMap_init);
+
+    for (auto iter = stlMap.begin(); iter != stlMap.end(); ++iter) {
+        jstring jKey = env->NewStringUTF((*iter).first.c_str());
+        jstring jValue = env->NewStringUTF((*iter).second.c_str());
+        env->CallObjectMethod(jMap, java_util_HashMap_put, jKey, jValue);
+        env->DeleteLocalRef(jKey);
+        env->DeleteLocalRef(jValue);
+    }
+    env->DeleteLocalRef(java_util_HashMap);
+    return jMap;
+}
+
+
+std::map<std::string, std::string> javaMapToStlMap(JNIEnv *env, jobject javaMap) {
     std::map<std::string, std::string> stlMap;
     if (env == NULL) {
         return stlMap;
@@ -45,5 +70,6 @@ std::map<std::string, std::string> javaMapToSTLMap(JNIEnv *env, jobject javaMap)
     env->DeleteLocalRef(java_util_Set);
     return stlMap;
 }
+
 
 #endif //CORE_MAP_H

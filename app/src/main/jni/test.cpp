@@ -144,9 +144,9 @@ jobject native_list(JNIEnv *env, jobject thiz) {
     vec.push_back("1234");
     vec.push_back("ada");
     vec.push_back("肯定不是");
-    jobject pJobject = vectorToListForString(env, vec);
+    jobject pJobject = stlVectorToJavaList(env, vec);
     if (pJobject != NULL) {
-        std::vector<std::string> vector = listToVectorForString(env, pJobject);
+        std::vector<std::string> vector = javaListToStlVector(env, pJobject);
         for (int i = 0; i < vector.size(); ++i) {
             LOGE("get from vector %s", vector[i].c_str());
         }
@@ -155,8 +155,8 @@ jobject native_list(JNIEnv *env, jobject thiz) {
 }
 
 
-void native_map(JNIEnv *env, jobject thiz, jobject javaMap) {
-    std::map<std::string, std::string> myMap = javaMapToSTLMap(env, javaMap);
+jobject native_map(JNIEnv *env, jobject thiz, jobject javaMap) {
+    std::map<std::string, std::string> myMap = javaMapToStlMap(env, javaMap);
     for (auto iter = myMap.begin(); iter != myMap.end(); ++iter) {
         auto myPair = *iter;
         std::string key = myPair.first;
@@ -165,6 +165,8 @@ void native_map(JNIEnv *env, jobject thiz, jobject javaMap) {
         LOGE("get from map key %s", key.c_str());
         LOGE("get from map value %s", value.c_str());
     }
+
+    return stlMapToJavaMap(env, myMap);
 
 }
 
@@ -191,7 +193,7 @@ static const JNINativeMethod sMethods[] = {
         },
         {
                 const_cast<char *>("native_map"),
-                const_cast<char *>("(Ljava/util/Map;)V"),
+                const_cast<char *>("(Ljava/util/Map;)Ljava/util/Map;"),
                 reinterpret_cast<void *>(native_map)
         }
 };

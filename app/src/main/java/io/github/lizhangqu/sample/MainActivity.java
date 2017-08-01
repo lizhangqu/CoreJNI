@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +39,19 @@ public class MainActivity extends AppCompatActivity {
                 map.put("key2", "value2");
                 map.put("key3", "value3");
                 map.put("key4", "value4");
-                Test.native_map(map);
+
+                Set<String> mapKeySet = map.keySet();
+                for (String key : mapKeySet) {
+                    Log.e("TAG", "java original map:" + key + " " + map.get(key));
+                }
+
+                Map<String, String> stringStringMap = Test.native_map(map);
+                if (stringStringMap != null) {
+                    Set<String> keySet = stringStringMap.keySet();
+                    for (String key : keySet) {
+                        Log.e("TAG", "java map:" + key + " " + stringStringMap.get(key));
+                    }
+                }
             }
         });
 
