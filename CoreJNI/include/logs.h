@@ -27,7 +27,7 @@
 
 #ifndef CORE_LOG_TAG
 #define CORE_LOG_TAG "CoreJNI"
-#endif
+#endif //CORE_LOG_TAG
 
 #ifdef ANDROID
 
@@ -77,8 +77,8 @@
 #define LOGE(...) printf("< %s >\t<%s>\t","error", CORE_LOG_TAG); printf(__VA_ARGS__); printf("\n");
 #endif
 
-#endif
+#endif //ANDROID
 
-#endif
+#endif //NDEBUG
 
 #endif //CORE_LOG_H
