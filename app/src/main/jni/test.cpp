@@ -101,12 +101,21 @@ jstring native_string(JNIEnv *env, jobject thiz) {
     return javaString(env, "just a test");
 }
 
-void native_byte(JNIEnv *env, jobject thiz, jbyteArray array) {
+void native_byte(JNIEnv *env, jobject thiz, jbyteArray array, jobject bytebuffer) {
     ScopedBytesRO scopedBytes(env, array);
     if (scopedBytes.get() == NULL) {
         LOGE("can't get it");
     } else {
         const jbyte *jbyte1 = scopedBytes.get();
+        const unsigned char *tmp = reinterpret_cast<const unsigned char *>(jbyte1);
+        LOGE("get it %s", tmp);
+    }
+
+    ScopedBytesRO scopedByteBuffer(env, bytebuffer);
+    if (scopedByteBuffer.get() == NULL) {
+        LOGE("can't get it");
+    } else {
+        const jbyte *jbyte1 = scopedByteBuffer.get();
         const unsigned char *tmp = reinterpret_cast<const unsigned char *>(jbyte1);
         LOGE("get it %s", tmp);
     }
@@ -123,7 +132,7 @@ void native_byte(JNIEnv *env, jobject thiz, jbyteArray array) {
         LOGE("can't get it");
     } else {
         const jbyte *string = sourceBytes.get();
-        LOGE("get it %d",sourceBytes.size());
+        LOGE("get it %d", sourceBytes.size());
     }
 
 }
@@ -141,7 +150,7 @@ static const JNINativeMethod sMethods[] = {
         },
         {
                 const_cast<char *>("native_byte"),
-                const_cast<char *>("([B)V"),
+                const_cast<char *>("([BLjava/nio/ByteBuffer;)V"),
                 reinterpret_cast<void *>(native_byte)
         }
 };

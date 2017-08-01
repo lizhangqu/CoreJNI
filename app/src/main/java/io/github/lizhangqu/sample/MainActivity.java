@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.nio.ByteBuffer;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -23,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
                 String s = Test.native_string();
                 Log.e("TAG", "native_string:" + s);
 
-                Test.native_byte("bytes".getBytes());
+                ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4);
+                byteBuffer.put("haha".getBytes());
+                Test.native_byte("bytes".getBytes(), byteBuffer);
             }
         });
 

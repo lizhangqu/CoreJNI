@@ -17,7 +17,7 @@ public class Test {
 
     public static native String native_string();
 
-    public static native void native_byte(byte[] bytes);
+    public static native void native_byte(byte[] bytes, java.nio.ByteBuffer byteBuffer);
 
     public static void callByNative() {
         int a = 20 / 0;
