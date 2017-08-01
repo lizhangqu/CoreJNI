@@ -2,6 +2,7 @@ package io.github.lizhangqu.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,7 +15,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Test.native_test();
+                try {
+                    Test.native_test();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+                String s = Test.native_string();
+                Log.e("TAG", "native_string:" + s);
+
             }
         });
 
