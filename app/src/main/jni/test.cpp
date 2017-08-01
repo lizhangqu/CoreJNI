@@ -108,7 +108,7 @@ void native_byte(JNIEnv *env, jobject thiz, jbyteArray array, jobject bytebuffer
     } else {
         const jbyte *jbyte1 = scopedBytes.get();
         const unsigned char *tmp = reinterpret_cast<const unsigned char *>(jbyte1);
-        LOGE("get it %s", tmp);
+        LOGE("get it %s %d", tmp, scopedBytes.size());
     }
 
     ScopedBytesRO scopedByteBuffer(env, bytebuffer);
@@ -117,7 +117,7 @@ void native_byte(JNIEnv *env, jobject thiz, jbyteArray array, jobject bytebuffer
     } else {
         const jbyte *jbyte1 = scopedByteBuffer.get();
         const unsigned char *tmp = reinterpret_cast<const unsigned char *>(jbyte1);
-        LOGE("get it %s", tmp);
+        LOGE("get it %s %d", tmp, scopedByteBuffer.size());
     }
 
     ScopedByteArrayRO sourceBytes(env, array);
@@ -128,10 +128,10 @@ void native_byte(JNIEnv *env, jobject thiz, jbyteArray array, jobject bytebuffer
 //    ScopedFloatArrayRO RW
 //    ScopedLongArrayRO RW
 //    ScopedShortArrayRO RW
+    sourceBytes.get()
     if (sourceBytes.get() == NULL) {
         LOGE("can't get it");
     } else {
-        const jbyte *string = sourceBytes.get();
         LOGE("get it %d", sourceBytes.size());
     }
 

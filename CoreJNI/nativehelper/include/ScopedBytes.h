@@ -56,8 +56,10 @@ public:
                    mEnv->IsInstanceOf(mObject, byteArrayClass)) {
             mByteArray = reinterpret_cast<jbyteArray>(mObject);
             mPtr = mEnv->GetByteArrayElements(mByteArray, NULL);
+            mSize = mEnv->GetArrayLength(mByteArray);
         } else {
             mPtr = reinterpret_cast<jbyte *>(mEnv->GetDirectBufferAddress(mObject));
+            mSize = mEnv->GetDirectBufferCapacity(mObject);
         }
     }
 
@@ -65,12 +67,18 @@ public:
         if (mByteArray != NULL) {
             mEnv->ReleaseByteArrayElements(mByteArray, mPtr, readOnly ? JNI_ABORT : 0);
         }
+
+    }
+
+    size_t size() const {
+        return mSize;
     }
 
 private:
     JNIEnv *const mEnv;
     const jobject mObject;
     jbyteArray mByteArray;
+    size_t mSize;
 
 protected:
     jbyte *mPtr;
@@ -95,6 +103,8 @@ public:
     jbyte *get() {
         return mPtr;
     }
+
+
 };
 
 #endif  // SCOPED_BYTES_H_included
