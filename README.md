@@ -1,5 +1,6 @@
 ## CoreJNI
 
+See sample in branch [android](https://github.com/lizhangqu/CoreJNI/tree/android)
 
 ## License
 
