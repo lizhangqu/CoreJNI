@@ -21,14 +21,20 @@ android {
             abiFilters 'armeabi-v7a'
         }
         externalNativeBuild {
+//            ndkBuild{
+//
+//            }
             cmake {
+                arguments "-DANDROID_TOOLCHAIN=gcc"
                 arguments "-DANDROID_STL=c++_static"
-                cppFlags "-std=c++11"
             }
         }
         signingConfig signingConfigs.config
     }
     externalNativeBuild {
+//        ndkBuild{
+//            path project.file("src/main/jni/Android.mk")
+//        }
         cmake {
             path project.file("src/main/jni/CMakeLists.txt")
         }
